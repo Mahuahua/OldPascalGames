@@ -1,0 +1,186 @@
+
+var s,t:string;
+    f:array[1..2,1..3]of longint;
+    l1,l2:longint;
+
+function fun(st:string;k:longint):longint;
+ var u,i,n:longint;
+ begin
+  randomize;
+  u:=0;
+  n:=length(st);
+  case k of
+   1:begin
+      for i:=1 to n div 2 do
+       u:=u+ord(st[i*2-1])*ord(st[i*2]);
+      if odd(n) then u:=u+ord(st[n]);
+      u:=50+u mod 50+1;
+     end;
+   2:begin
+      for i:=1 to n-2 do
+       u:=u+ord(st[i])*ord(st[i+2]);
+      u:=50+(u+ord(st[n-1])+ord(st[n])) mod 50+1;
+     end;
+   3:begin
+      for i:=1 to n-1 do
+       u:=u+ord(st[i])*ord(st[i+1]);
+      u:=50+(u+ord(st[n])*2) mod 50+1;
+     end;
+   4:begin
+      u:=1;
+      for i:=1 to n do
+       u:=u*ord(st[i]) mod 517;
+      if u<100 then u:=u+100;
+     end;
+  end;
+  exit(u);
+ end;
+
+procedure init;
+ var i,zwshenniu1,zwshenniu2:longint;
+ begin
+  write('Player 1 Name:');
+  readln(s);
+  write('Player 2 Name:');
+  readln(t);
+  writeln;
+  for i:=1 to 3 do
+   begin
+    f[1,i]:=fun(s,i);
+    f[2,i]:=fun(t,i);
+   end;
+  l1:=fun(s,4);
+  l2:=fun(t,4);
+  writeln('Player 1:',s);
+  writeln('Live:',l1,'HP');
+  writeln('Attack:',f[1,1]);
+  writeln('Defense:',f[1,2]);
+  writeln('Luck:',f[1,3]);
+  zwshenniu1:=trunc(random(10));
+  writeln('Rp',zwshenniu1);
+  f[1,3]:=f[1,3]+zwshenniu1;
+  writeln;
+  writeln('Player 2:',t);
+  writeln('Live:',l2,'HP');
+  writeln('Attack:',f[2,1]);
+  writeln('Defense:',f[2,2]);
+  writeln('Luck:',f[2,3]);
+  zwshenniu2:=trunc(random(10));
+  writeln('Rp',zwshenniu2);
+  f[2,3]:=f[2,3]+zwshenniu2;
+  writeln;
+ end;
+
+procedure fight;
+ var turn,harm,i,ad:longint;
+     r,r1:extended;
+     st:string;
+ begin
+  turn:=1;
+  while true do
+   begin
+    for i:=1 to trunc(2e8) do continue;
+    randomize;
+    if turn=1 then
+     begin
+      r:=random;
+      if r<=f[1,3]/400 then
+       begin
+        r1:=random;
+        if r1>0.5 then
+         begin
+          ad:=trunc(random*150+1);
+          l1:=l1+ad;
+          writeln(s,' treat himself and add ',ad,'HP.');
+         end
+        else
+         begin
+          dec(f[2,1],10);if f[2,1]<0 then f[2,1]:=0;
+          dec(f[2,2],10);if f[2,2]<0 then f[2,2]:=0;
+          dec(f[2,3],10);if f[2,3]<0 then f[2,3]:=0;
+          writeln(s,' cruises ',t,',and makes all his characters reduce.');
+          writeln('Now:(Att:',f[2,1],', Def:',f[2,2],', Luc',f[2,3],')');
+         end;
+        for i:=1 to trunc(2e8) do continue;
+       end;
+      write(s,' attacks ',t);
+      harm:=trunc((f[1,1]*sqrt(f[1,3])*random-f[2,2]*sqrt(f[2,3])*random)/2);
+      if harm>0
+       then write(',',t,'lost ',harm,'hp.')
+       else
+        begin
+         write(',but ',t,' escapes.');
+         harm:=0;
+        end;
+      l2:=l2-harm;
+      writeln('  (',l1,'HP,',l2,'HP)');
+      if l2<=0 then
+       begin
+        while true do
+         begin
+          writeln;
+          writeln(t,' died and ',s,' won!.Press "Exit" or "Play Again".');
+          readln(st);
+          if st='Exit'then halt
+          else if st='Play Again' then exit
+          else writeln('I cannot understand what you said.');
+         end;
+       end;
+     end;
+    if turn=2 then
+     begin
+      r:=random;
+      if r<=f[2,3]/400 then
+       begin
+        r1:=random;
+        if r1>0.5 then
+         begin
+          ad:=trunc(random*150+1);
+          l2:=l2+ad;
+          writeln(t,' treat himself and add ',ad,'HP.');
+         end
+        else
+         begin
+          dec(f[1,1],10);if f[1,1]<0 then f[1,1]:=0;
+          dec(f[1,2],10);if f[1,2]<0 then f[1,2]:=0;
+          dec(f[1,3],10);if f[1,3]<0 then f[1,3]:=0;
+          writeln(t,' cruises ',s,',and makes all his characters reduce.');
+          writeln('Now:(Att:',f[1,1],', Def:',f[1,2],', Luc',f[1,3],')');
+         end;
+        for i:=1 to trunc(2e8) do continue;
+       end;
+      write(t,' attacks ',s);
+      harm:=trunc((f[2,1]*sqrt(f[2,3])*random-f[1,2]*sqrt(f[1,3])*random)/2);
+      if harm>0
+       then write(',gives him the harm of ',harm,'.')
+       else
+        begin
+         write(',but ',s,' escapes.');
+         harm:=0;
+        end;
+      l1:=l1-harm;
+      writeln('  (',l1,'HP,',l2,'HP)');
+      if l1<=0 then
+       begin
+        while true do
+         begin
+          writeln;
+          writeln(s,' died and ',t,' won!Press "Exit" or "Play Again".');
+          readln(st);
+          if st='Exit'then halt
+          else if st='Play Again' then exit
+          else writeln('I cannot understand what you said.');
+         end;
+       end;
+     end;
+   turn:=3-turn;
+  end;
+ end;
+
+begin
+ while true do
+  begin
+   init;
+   fight;
+  end;
+end.

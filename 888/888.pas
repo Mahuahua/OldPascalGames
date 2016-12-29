@@ -1,0 +1,249 @@
+uses crt;
+label 100,1000;
+var
+  a:array[1..5]of longint;
+  sum,xx,k,kk,ssss,i,j,win,lose:longint;
+  ch:char;
+begin
+  sum:=100;
+100:  clrscr;
+  for i:=1 to 80 do
+  for j:=1 to 25 do
+  begin
+    textbackground(green);
+    writeln(' ');
+  end;
+  gotoxy(38,5);
+  textcolor(white);
+  write('***');
+  gotoxy(30,8);
+  writeln('Press Enter');
+  readln(ch);
+
+  randomize;
+  ssss:=1;
+  xx:=0;
+  kk:=0;
+for i:=1 to 3 do
+  begin
+    repeat
+      repeat
+        gotoxy(30,8);
+        writeln('Press S Key');
+        if i=1 then begin
+          gotoxy(40,5);
+          write(trunc(random(10)));
+        end;
+        if i<=2 then begin
+          gotoxy(39,5);
+          write(trunc(random(10)));
+        end;
+        gotoxy(38,5);
+        write(trunc(random(10)));
+        delay(5);
+      until keypressed;
+      ch:=readkey;
+    until ch='s';
+    gotoxy(41-i,5);
+    kk:=trunc(random(10));
+    write(kk);
+    xx:=xx+kk*ssss;
+    ssss:=ssss*10;
+end;
+  lose:=0;
+  win:=0;
+  gotoxy(40,10);
+  if (xx=849)or(xx=314)or(xx=498)or(xx=517) then writeln('I will kill you');
+  if (xx mod 10=4)then begin lose:=lose+20;writeln(' 4 kills you 20 $');end;
+  if (xx div 100=4) then begin lose:=lose+20;writeln(' 4 kills you 20 $');end;
+  if ((xx div 10)mod 10)=4 then begin lose:=lose+20;writeln(' 4 kills you 20 $');end;
+  if (xx mod 100=44)or(xx div 10=44) then begin lose:=lose+15;writeln(' 44 kills you 20 $');end;
+  if (xx mod 10=8)then begin win:=win+10;writeln(' 8 gives you 10 $');end;
+  if (xx div 100=8) then begin win:=win+10;writeln(' 8 gives you 10 $');end;
+  if ((xx div 10)mod 10)=8 then begin win:=win+10;writeln(' 8 gives you 10 $');end;
+  if (xx mod 10=xx div 100)or(xx mod 10=((xx div 10)mod 10))or(((xx div 10)mod 10)=xx div 100) then begin
+  win:=win+15;writeln(' double gives you 15 $');end;
+  if (xx mod 10=xx div 100)and(xx mod 10=((xx div 10)mod 10))then begin win:=win+20;writeln(' trible gives you 20 $');end;
+  if xx=444 then begin lose:=lose+35;writeln(' 444 kills you 35 $');end;
+  if xx=666 then begin lose:=lose+50;writeln(' 666 kills you 50 $');end;
+  if (xx div 10=13)or(xx mod 100= 13)then begin lose:=lose+10;writeln(' 13 kills you 10 $');end;
+  gotoxy(40,12);
+  if win >lose then write('you win',win-lose,' $')else
+  begin if win<lose then write('you lose',lose-win,' $') else write('you win nothing,try again');end;
+  sum:=sum+win-lose+20;
+  gotoxy(1,1);write(sum);
+  if sum<0 then
+    begin
+      for i:=1 to 100000 do write('DIE DIE    ');
+      exit;
+    end;
+  if sum>150 then
+  begin
+    for i:=1 to 5 do
+      begin
+         delay(1);
+         k:=trunc(random(80));
+         kk:=trunc(random(25));
+         gotoxy(k,kk);
+         textbackground(red);
+         write(' ');
+      end;
+    for i:=1 to 80 do
+      for j:=1 to 25 do
+      begin
+        textbackground(red);
+        write(' ');
+      end;
+    repeat
+       repeat
+        gotoxy(30,15);
+        writeln('N for Level Up and E for exit');
+        delay(100);
+      until keypressed;
+      ch:=readkey;
+      if ch='e' then exit;
+      if ch='n' then goto 1000;
+    until ((ch='e') or (ch='n'));
+  end;
+
+  repeat
+  repeat
+  gotoxy(30,15);
+  writeln('A for Again and E for exit');
+  delay(100);
+  until keypressed;
+  ch:=readkey;
+  if ch='e' then exit;
+  if ch='a' then goto 100;
+  until ((ch='e') or (ch='a'));
+1000:
+  clrscr;
+  for i:=1 to 80 do
+  for j:=1 to 25 do
+  begin
+    textbackground(red);
+    writeln(' ');
+  end;
+  gotoxy(37,5);
+  textcolor(white);
+  write('****');
+  gotoxy(30,8);
+  writeln('Press Enter');
+  readln(ch);
+
+
+  lose:=0;
+  win:=0;
+  ssss:=1;
+  xx:=0;
+  kk:=0;
+for i:=1 to 4 do
+begin
+  repeat
+  repeat
+  gotoxy(30,8);
+  writeln('Press S Key');
+  if i=1 then begin
+  gotoxy(40,5);
+  write(trunc(random(10)));
+  end;
+  if i<=2 then begin
+  gotoxy(39,5);
+  write(trunc(random(10)));
+  end;
+  if i<=3 then begin
+  gotoxy(38,5);
+  write(trunc(random(10)));
+  end;
+  begin
+  gotoxy(37,5);
+  write(trunc(random(10)));
+  end;
+  delay(5);
+  until keypressed;
+  ch:=readkey;
+  until ch='s';
+
+  gotoxy(41-i,5);
+  kk:=trunc(random(10));
+  write(kk);
+  xx:=xx+kk*ssss;
+  ssss:=ssss*10;
+end;
+for i:=1 to 4 do
+begin
+  a[i]:=xx mod 10;
+  xx:=xx div 10;
+end;
+  gotoxy(40,10);
+  if (a[1]=4)then begin lose:=lose+20;writeln(' 4 kills 20 $');end;
+  if (a[2]=4)then begin lose:=lose+20;writeln(' 4 kills 20 $');end;
+  if (a[3]=4)  then begin lose:=lose+20;writeln(' 4 kills 20 $');end;
+  if (a[4]=4) then begin lose:=lose+20;writeln(' 4 kills 20 $');end;
+  if (a[1]=8)then begin win:=win+10;writeln(' 8 gives 10 $');end;
+  if (a[2]=8) then begin win:=win+10;writeln(' 8 gives 10 $');end;
+  if (a[3])=8 then begin win:=win+10;writeln(' 8 gives 10 $');end;
+  if (a[4])=8 then begin win:=win+10;writeln(' 8 gives 10 $');end;
+  if (a[1]=a[2])or(a[1]=a[3])or(a[1]=a[4])or(a[2]=a[3])or(a[2]=a[3])or(a[3]=a[4]) then begin
+  win:=win+15;writeln(' double gives 15 $');end;
+  if (a[1]=a[2])and(a[2]=a[3])or(a[1]=a[2])and(a[2]=a[4])or(a[1]=a[3])and(a[3]=a[4])or(a[4]=a[2])and(a[2]=a[3]) then begin
+  win:=win+20;writeln(' trible gives 20 $');end;
+  if ((a[3]*100+a[2]*10+a[1])=666) or(a[4]*100+a[3]*10+a[2]=666)then begin lose:=lose+50;writeln(' 666 kills 50 $');end;
+  if (a[2]*10+a[1]=13)or(a[3]*10+a[2]=13)or(a[4]*10+a[3]=13)then begin lose:=lose+10;writeln(' 13 kills 10 $');end;
+  gotoxy(40,12);
+  if win >lose then write('win',win-lose,' $');
+  if win <lose then write('lose',lose-win,' $');
+  if win =lose then write('you win nothing,try again');
+  sum:=sum+win-lose+20;
+  gotoxy(1,1);write(sum);
+  if sum<0 then begin
+  for i:=1 to 100000 do write('DIE DIE    ');
+  exit;
+  end;
+  if sum>250 then
+  begin
+    for i:=1 to 9000 do
+      begin
+         delay(1);
+         k:=trunc(random(80));
+         kk:=trunc(random(25));
+         gotoxy(k,kk);
+         xx:=random(8);
+         case xx of
+           1:begin textbackground(red);write(' ');end;
+           2:begin textbackground(white);write(' ');end;
+           3:begin textbackground(green);write(' ');end;
+           4:begin textbackground(brown);write(' ');end;
+           5:begin textbackground(black);write(' ');end;
+           6:begin textbackground(blue);write(' ');end;
+           7:begin textbackground(yellow);write(' ');end;
+         end;
+       end;
+      for i:=1 to 80 do
+        for j:=1 to 25 do
+         begin
+           textbackground(red);
+           write(' ');
+        end;
+     repeat
+       repeat
+        gotoxy(30,15);
+        writeln('E for exit');
+        delay(100);
+      until keypressed;
+      ch:=readkey;
+      if ch='e' then exit;
+  until (ch='e');
+  end;
+  repeat
+  repeat
+  gotoxy(30,15);
+  writeln('A for Again and E for exit');
+  delay(100);
+  until keypressed;
+  ch:=readkey;
+  if ch='e' then exit;
+  if ch='a' then goto 1000;
+  until ((ch='e') or (ch='a'));
+
+end.
